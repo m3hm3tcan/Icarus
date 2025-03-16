@@ -1,0 +1,23 @@
+﻿@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+
+@page "/auth/{action}"
+
+@inject NavigationManager Navigation
+
+<RemoteAuthenticatorView Action="@Action" OnLogInSucceeded="@LoginSucceeded" />
+
+@code {
+    [Parameter]
+    public string? Action { get; set; }
+
+    [SupplyParameterFromQuery(Name = "returnUrl")]
+    public string? ReturnUrl { get; set; }
+
+    public void LoginSucceeded()
+    {
+        if (ReturnUrl is string returnUrl)
+        {
+            Navigation.NavigateTo(returnUrl, replace: true);
+        }
+    }
+}

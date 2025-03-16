@@ -3,6 +3,12 @@
 @code {
     protected override void OnInitialized()
     {
-        Navigation.NavigateTo($"authentication/login?returnUrl={Uri.EscapeDataString(Navigation.Uri)}");
+        var query = Uri.TryCreate(Navigation.Uri, UriKind.RelativeOrAbsolute, out var result) switch
+        {
+            true => $"?returnUrl={result.AbsolutePath}",
+            false => null
+        };
+
+        Navigation.NavigateTo("/auth/login" + query);
     }
 }

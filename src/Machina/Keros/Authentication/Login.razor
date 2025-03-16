@@ -1,0 +1,18 @@
+﻿@inject IServiceProvider ServiceProvider
+
+@page "/login"
+
+<PageTitle>Login</PageTitle>
+
+<h1>Log in</h1>
+
+@foreach (var provider in ServiceProvider.GetServices<ILoginProvider>())
+{
+    <FluentButton Appearance="Appearance.Lightweight" @onclick="Redirect">@provider.Name</FluentButton>
+}
+
+@code {
+    private void Redirect()
+    {
+    }
+}
