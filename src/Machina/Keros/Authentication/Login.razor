@@ -1,4 +1,5 @@
 ﻿@inject IServiceProvider ServiceProvider
+@inject NavigationManager Navigation
 
 @page "/login"
 
@@ -8,11 +9,16 @@
 
 @foreach (var provider in ServiceProvider.GetServices<ILoginProvider>())
 {
-    <FluentButton Appearance="Appearance.Lightweight" @onclick="Redirect">@provider.Name</FluentButton>
+    <FluentButton Appearance="Appearance.Lightweight" @onclick="@(e => Redirect(provider))">@provider.Name</FluentButton>
 }
 
 @code {
-    private void Redirect()
+    /// <summary>
+    /// Performs login operation on requested login provider.
+    /// </summary>
+    /// <param name="provider">The <see cref="ILoggerProvider"/> to use for the login process.</param>
+    private void Redirect(ILoginProvider provider)
     {
+        Navigation.NavigateTo("/auth/login");
     }
 }

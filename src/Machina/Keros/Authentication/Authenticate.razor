@@ -3,21 +3,26 @@
 @page "/auth/{action}"
 
 @inject NavigationManager Navigation
+@inject RedirectStack Redirects
 
-<RemoteAuthenticatorView Action="@Action" OnLogInSucceeded="@LoginSucceeded" />
+<RemoteAuthenticatorView Action="@Action" OnLogInSucceeded="@OnLoginSucceeded" />
 
 @code {
+    /// <summary>
+    /// Gets or sets the action to perform.
+    /// </summary>
     [Parameter]
     public string? Action { get; set; }
 
-    [SupplyParameterFromQuery(Name = "returnUrl")]
-    public string? ReturnUrl { get; set; }
-
-    public void LoginSucceeded()
+    /// <summary>
+    /// Handles the event when the user logs in successfully.
+    /// </summary>
+    private void OnLoginSucceeded()
     {
-        if (ReturnUrl is string returnUrl)
+        if (!Redirects.TryRestore(out var returnUrl))
         {
-            Navigation.NavigateTo(returnUrl, replace: true);
+            returnUrl = "/";
         }
+        Navigation.NavigateTo(returnUrl, forceLoad: true, replace: true);
     }
 }

@@ -1,0 +1,26 @@
+﻿@inject NavigationManager Navigation
+@inject RedirectStack RedirectStack
+
+@code {
+    /// <summary>
+    /// Path to redirect to.
+    /// </summary>
+    [Parameter]
+    public string? Path { get; set; }
+
+    /// <summary>
+    /// Initializes the component.
+    /// </summary>
+    protected override void OnInitialized()
+    {
+        if (Uri.TryCreate(Navigation.Uri, UriKind.RelativeOrAbsolute, out var result))
+        {
+            RedirectStack.Request(result.AbsolutePath);
+        }
+
+        if (Path is string path)
+        {
+            Navigation.NavigateTo(path);
+        }
+    }
+}

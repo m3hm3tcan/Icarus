@@ -37,6 +37,7 @@ public static class StartupExtensions
     /// <param name="scopes">The sequence of scopes to request authorization for.</param>
     public static void AddProtectionMap(this IServiceCollection services, IEnumerable<string> urls, IEnumerable<string> scopes)
     {
+        services.AddSingleton<RedirectStack>();
         services.AddSingleton(new AuthorizationMapping(urls, scopes));
     }
 }
